@@ -16,31 +16,12 @@
     <body>
         <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container" style="width: 350px">
+    <div class="container" style="width: 350px">
         <div class="navbar-collapse collapse" id="navbarNav">
-            <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item active">
-                    {% if user.is_authenticated %}
-                    <a class="nav-link"><span style="color: orangered;">{{ request.user.username }}</span></a>
-                    {% endif %}
-                </li>
-                <li class="nav-item active">
-                    {% if user.is_authenticated %}
-                    <a class="nav-link" href='{% url "account_logout" %}'>Выход</a>
-                    {% else %}
-                    <a class="nav-link" href='{% url "account_login" %}'>Вход</a>
-                    {% endif %}
-                </li>
-                <li class="nav-item active">
-                    {% if not user.is_authenticated %}
-                    <a class="nav-link" href='{% url "account_signup" %}'>Регистрация</a>
-                    {% endif %}
-                </li>
-            </ul>
         </div>
     </div>
    <div class="container">
-       <a class="navbar-brand" href="/news/">{% trans "NewsPortal"  %}</a>
+       <a class="navbar-brand" href="/posts/">{% trans "PortalMMO"  %}</a>
        <button class="navbar-toggler" type="button" data-toggle="collapse"
                data-target="#navbarResponsive"
                aria-controls="navbarResponsive" aria-expanded="false"
@@ -50,39 +31,22 @@
        <div class="collapse navbar-collapse" id="navbarResponsive">
            <ul class="navbar-nav ml-auto">
                <li class="nav-item active">
-                   <a class="nav-link" href="/news/">Home
+                   <a class="nav-link" href="/posts/">Home
                        <span class="sr-only">(current)</span>
                    </a>
-               </li>
-               <li class="nav-item">
-                   <a class="nav-link" href="/news/search/">Поиск</a>
-               </li>
-               <li class="nav-item">
-                   <a class="nav-link" href="/news/create/">Создать новость</a>
-               </li>
-               <li class="nav-item">
-                   <a class="nav-link" href="/articles/create/">Создать статью</a>
-               </li>
+<!--               </li>-->
+<!--               <li class="nav-item">-->
+<!--                   <a class="nav-link" href="/news/search/">Поиск</a>-->
+<!--               </li>-->
+<!--               <li class="nav-item">-->
+<!--                   <a class="nav-link" href="/news/create/">Создать новость</a>-->
+<!--               </li>-->
+<!--               <li class="nav-item">-->
+<!--                   <a class="nav-link" href="/articles/create/">Создать статью</a>-->
+<!--               </li>-->
            </ul>
        </div>
    </div>
-    <div class="container"style="width: 250px">
-        <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
-        <input type="hidden" name="next" value="{{ redirect_to }}">
-
-        <select name="language" id="">
-            {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
-            {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
-
-            {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
-                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
-                    {{ language.name_local }} - {{ language.code }}
-                </option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="set">
-        </form>
-    </div>
 </nav>
         <!-- Page content-->
         <div class="container">
