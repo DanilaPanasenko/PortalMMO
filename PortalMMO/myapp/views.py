@@ -1,6 +1,6 @@
 from datetime import datetime
-
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .filters import AdvertisementFilter
 from .models import Advertisement
 
 
@@ -14,4 +14,28 @@ class AdvertisementList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['time_now'] = datetime.utcnow()
+        return context
+
+
+class AdvertisementDetail(DetailView):
+    model = Advertisement
+    template_name = 'flatpages/detail.html'
+    context_object_name = 'detail'
+
+
+class PostSearch(ListView):
+    model = Advertisement
+    ordering = '-some_datatime'
+    template_name = 'flatpages/search.html'
+    context_object_name = 'posts_search'
+    paginate_by = 1
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = AdvertisementFilter(self.request.GET, queryset)
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
         return context

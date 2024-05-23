@@ -29,7 +29,7 @@ Advertisement
 <!--               </td>-->
                <td>{{ post.headline }}</td>
                <td>{{ post.some_datatime }}</td>
-               <td>{{ post.text }}</td>
+               <td>{{ post.text|safe }}</td>
                <td>
 <!--                   {% for category in post.category.all %}-->
 <!--                        <a href="{% url 'category_list' category.id %}">{{category}}</a>-->
