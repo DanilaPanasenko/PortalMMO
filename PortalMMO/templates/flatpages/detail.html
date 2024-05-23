@@ -1,0 +1,12 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Detail
+{% endblock title %}
+
+{% block content %}
+<h1>{{ detail.headline }}</h1>
+<h2>{{ detail.some_datatime|date:'d M Y' }}</h2>
+<hr>
+<body>{{ detail.text|safe  }}</body>
+{% endblock content %}
