@@ -1,5 +1,5 @@
 from django_filters import FilterSet, ModelChoiceFilter, ModelMultipleChoiceFilter, CharFilter, DateFilter
-from .models import  User
+from .models import User
 from django import forms
 
 

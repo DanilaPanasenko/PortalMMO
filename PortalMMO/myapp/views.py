@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import AdvertisementFilter
+from .forms import PostForm
 from .models import Advertisement
 
 
@@ -39,3 +40,20 @@ class PostSearch(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
+
+
+class AdvertisementCreate(CreateView):
+    form_class = PostForm
+    model = Advertisement
+    template_name = 'flatpages/post_create.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['author'] = self.request.user.username
+        return context
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return super().form_valid(form)
