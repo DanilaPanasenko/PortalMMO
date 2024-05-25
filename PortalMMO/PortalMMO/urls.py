@@ -27,7 +27,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('myapp.urls')),
+    path('', include('protect.urls')),
+    path('sign/', include('sign.urls')),
     path('pages/', include('django.contrib.flatpages.urls')),
+    path('accounts/', include('allauth.urls')),
     re_path(r'^upload/', login_required(upload), name='ckeditor_upload'),
     re_path(r'^browse/', login_required(never_cache(browse)), name='ckeditor_browse'),
 ]

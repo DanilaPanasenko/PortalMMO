@@ -42,6 +42,13 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'myapp',
+    'protect',
+    'sign',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     'django.contrib.sites',
     'django.contrib.flatpages',
@@ -55,6 +62,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'PortalMMO.urls'
@@ -130,6 +139,10 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = 'advert_list'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
