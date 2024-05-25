@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .filters import AdvertisementFilter
 from .forms import PostForm
 from .models import Advertisement
+from django.urls import reverse_lazy
 
 
 class AdvertisementList(ListView):
@@ -10,7 +11,7 @@ class AdvertisementList(ListView):
     ordering = '-some_datatime'
     template_name = 'flatpages/Advertisement.html'
     context_object_name = 'advertisement'
-    paginate_by = 1
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -57,3 +58,24 @@ class AdvertisementCreate(CreateView):
         post.author = self.request.user
         post.save()
         return super().form_valid(form)
+
+
+class AdvertisementUpdate(UpdateView):
+    model = Advertisement
+    form_class = PostForm
+    template_name = 'flatpages/post_create.html'
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Advertisement.objects.get(pk=id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['author'] = Advertisement.objects.get(pk=self.kwargs.get('pk')).author
+        return context
+
+
+class AdvertisementDelete(DeleteView):
+    model = Advertisement
+    template_name = 'flatpages/post_delete.html'
+    success_url = reverse_lazy('advert_list')

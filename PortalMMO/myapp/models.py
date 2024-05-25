@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
-
+# from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -16,7 +17,7 @@ class Advertisement(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     headline = models.CharField(max_length=100)
-    text = RichTextField()
+    text = RichTextUploadingField()
     some_datatime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -24,6 +25,9 @@ class Advertisement(models.Model):
 
     def preview(self):
         return self.text[:124] + '...'
+
+    def get_absolute_url(self):
+        return reverse('detail', args=[str(self.id)])
 
 
 class Responses(models.Model):
