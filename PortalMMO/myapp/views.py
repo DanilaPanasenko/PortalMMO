@@ -1,8 +1,8 @@
 from datetime import datetime
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import AdvertisementFilter
-from .forms import PostForm
-from .models import Advertisement
+from .forms import PostForm, ResponseForm
+from .models import Advertisement, Responses
 from django.urls import reverse_lazy
 
 
@@ -79,3 +79,15 @@ class AdvertisementDelete(DeleteView):
     model = Advertisement
     template_name = 'flatpages/post_delete.html'
     success_url = reverse_lazy('advert_list')
+
+class ResponsesCreate(CreateView):
+    form_class = ResponseForm
+    model = Responses
+    template_name = 'flatpages/response_create.html'
+
+    def form_valid(self, form):
+        response = form.save(commit=False)
+        response.post.author = self.request.user
+        response.advertisement_id = self.kwargs['pk']
+        response.save()
+        return super().form_valid(form)
