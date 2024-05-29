@@ -16,13 +16,16 @@
     {% for response in responses %}
         {% if not response.status %}
             <h3>Отклики, ожидающие подтверждения:</h3>
-                <p>{{ response.user|safe }} {{ response.some_datatime|date:"d E Y, H:i" }} </p>
-                <hr>
-                {{ response.text|safe }}
-                <hr>
-                <a href="{% url 'accept_response' response.pk %}">Принять</a>
-                <a href="{% url 'delete_response' response.pk %}">Удалить</a>
-        {% else %}
+            <p>{{ response.user|safe }} {{ response.some_datatime|date:"d E Y, H:i" }} </p>
+            <hr>
+            {{ response.text|safe }}
+            <hr>
+            <a href="{% url 'accept_response' response.pk %}">Принять</a>
+            <a href="{% url 'delete_response' response.pk %}">Удалить</a>
+        {% endif %}
+    {% endfor %}
+    {% for response in responses %}
+        {% if response.status %}
             <h3>Принятые:</h3>
             <p>{{ response.user|safe }} {{ response.some_datatime|date:"d E Y, H:i" }} </p>
             <hr>

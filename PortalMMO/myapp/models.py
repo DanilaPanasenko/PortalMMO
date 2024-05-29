@@ -34,6 +34,7 @@ class Responses(models.Model):
     post = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
+    status = models.BooleanField(default=False)
     some_datatime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
