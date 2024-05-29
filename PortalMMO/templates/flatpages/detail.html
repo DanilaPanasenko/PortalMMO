@@ -9,4 +9,6 @@ Detail
 <h2>{{ detail.some_datatime|date:'d M Y' }}</h2>
 <hr>
 <body>{{ detail.text|safe  }}</body>
+<hr>
+<a href="{% url 'response_create' detail.id %}">Оставить отзыв</a>
 {% endblock content %}

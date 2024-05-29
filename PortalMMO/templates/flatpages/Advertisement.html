@@ -22,12 +22,9 @@ Advertisement
 
            {% for post in advertisement %}
            <tr>
-<!--               <td>-->
-<!--                   {% for category in post.category.all %}-->
-<!--                        <a href="{% url 'posts_detail' post.id %}">{{post.headline}}</a>-->
-<!--                   {% endfor %}-->
-<!--               </td>-->
-               <td>{{ post.headline }}</td>
+               <td>
+                   <a href="{% url 'detail' post.id %}">{{post.headline}}</a>
+               </td>
                <td>{{ post.some_datatime }}</td>
                <td>{{ post.text|safe }}</td>
                <td>

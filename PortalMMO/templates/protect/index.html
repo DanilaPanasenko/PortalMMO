@@ -12,11 +12,25 @@
 </form>
 <button> <a href="/">Сбросить</a> </button>
 <hr>
-<h4>Все отклики по объявлению</h4>
 {% if responses %}
-{% for response in responses %}
-<p>{{ response.text}}</p>
-{% endfor %}
+    {% for response in responses %}
+        {% if not response.status %}
+            <h3>Отклики, ожидающие подтверждения:</h3>
+                <p>{{ response.author|safe }} {{ response.date|date:"d E Y, H:i" }} </p>
+                <hr>
+                {{ response.text|safe }}
+                <hr>
+                <a href="{% url 'accept_response' response.pk %}">Принять</a>
+                <a href="{% url 'delete_response' response.pk %}">Удалить</a>
+    <h3>Принятые:</h3>
+        {% else %}
+            <p>{{ response.author|safe }} {{ response.date|date:"d E Y, H:i" }} </p>
+            <hr>
+            {{ response.text|safe }}
+            <hr>
+            <a href="{% url 'delete_response' response.pk %}">Удалить</a>
+        {% endif %}
+    {% endfor %}
 {% endif %}
 <button> <a href="/accounts/logout/">Выйти</a> </button>
 {% endblock %}

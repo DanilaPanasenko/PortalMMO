@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import AdvertisementList, AdvertisementDetail, PostSearch, AdvertisementCreate, AdvertisementUpdate, \
-    AdvertisementDelete, ResponsesCreate
+    AdvertisementDelete, ResponsesCreate, accept_response, delete_response
 
 urlpatterns = [
     path('posts/', AdvertisementList.as_view(), name='advert_list'),
@@ -10,4 +10,6 @@ urlpatterns = [
     path('posts/<int:pk>/update/', AdvertisementUpdate.as_view(), name='update'),
     path('posts/<int:pk>/delete/', AdvertisementDelete.as_view(), name='delete'),
     path('<int:pk>/response/create/', ResponsesCreate.as_view(), name='response_create'),
+    path('accept_replay/<int:responses_id>', accept_response, name='accept_response'),
+    path('delete_replay/<int:responses_id>', delete_response, name='delete_response'),
 ]

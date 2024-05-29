@@ -1,9 +1,10 @@
 from datetime import datetime
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import AdvertisementFilter
 from .forms import PostForm, ResponseForm
 from .models import Advertisement, Responses
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 
 class AdvertisementList(ListView):
@@ -87,7 +88,18 @@ class ResponsesCreate(CreateView):
 
     def form_valid(self, form):
         response = form.save(commit=False)
-        response.post.author = self.request.user
-        response.advertisement_id = self.kwargs['pk']
+        response.user = self.request.user
+        response.post_id = self.kwargs['pk']
         response.save()
         return super().form_valid(form)
+
+def accept_response(request, responses_id):
+    response = get_object_or_404(Responses, pk=responses_id)
+    response.status = True
+    response.save()
+    return redirect(reverse('advert_list'))
+
+def delete_response(request, responses_id):
+    response = get_object_or_404(Responses, pk=responses_id)
+    response.delete()
+    return redirect(reverse('advert_list'))
