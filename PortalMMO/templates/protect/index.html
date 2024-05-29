@@ -22,8 +22,8 @@
                 <hr>
                 <a href="{% url 'accept_response' response.pk %}">Принять</a>
                 <a href="{% url 'delete_response' response.pk %}">Удалить</a>
-    <h3>Принятые:</h3>
         {% else %}
+            <h3>Принятые:</h3>
             <p>{{ response.author|safe }} {{ response.date|date:"d E Y, H:i" }} </p>
             <hr>
             {{ response.text|safe }}
@@ -32,5 +32,7 @@
         {% endif %}
     {% endfor %}
 {% endif %}
-<button> <a href="/accounts/logout/">Выйти</a> </button>
+<p>
+    <button> <a href="/accounts/logout/">Выйти</a> </button>
+</p>
 {% endblock %}
