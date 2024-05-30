@@ -1,10 +1,25 @@
 from datetime import datetime
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import AdvertisementFilter
 from .forms import PostForm, ResponseForm
-from .models import Advertisement, Responses
+from .models import Advertisement, Responses, User
 from django.urls import reverse_lazy, reverse
+
+
+class ConfirmUser(UpdateView):
+    model = User
+    context_object_name = 'confirm_user'
+
+    def post(self, request, *args, **kwargs):
+        if 'code' in request.POST:
+            user = User.objects.filter(code=request.POST['code'])
+            if user.exists():
+                user.update(is_active=True)
+                user.update(code=None)
+            else:
+                return render(self.request, template_name='invalid_code.html')
+        return redirect('account_login')
 
 
 class AdvertisementList(ListView):

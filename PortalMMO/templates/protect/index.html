@@ -24,9 +24,9 @@
             <a href="{% url 'delete_response' response.pk %}">Удалить</a>
         {% endif %}
     {% endfor %}
+            <h3>Принятые:</h3>
     {% for response in responses %}
         {% if response.status %}
-            <h3>Принятые:</h3>
             <p>{{ response.user|safe }} {{ response.some_datatime|date:"d E Y, H:i" }} </p>
             <hr>
             {{ response.text|safe }}

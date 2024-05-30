@@ -145,6 +145,8 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+AUTH_USER_MODEL = 'myapp.User'
+
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'advert_list'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
@@ -155,6 +157,17 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'non'
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+ACCOUNT_FORMS = {'signup': 'myapp.forms.CommonSignupForm'}
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'danilapanasenko0'
+EMAIL_HOST_PASSWORD = 'wmduyfxitdwfachh'
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'danilapanasenko0@yandex.ru'
+
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

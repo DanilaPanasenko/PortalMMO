@@ -1,8 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 # from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.urls import reverse
+
+
+class User(AbstractUser):
+    code = models.CharField(max_length=15, blank=True, null=True)
 
 
 class Category(models.Model):
