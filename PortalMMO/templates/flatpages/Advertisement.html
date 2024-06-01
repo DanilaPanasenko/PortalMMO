@@ -28,9 +28,7 @@ Advertisement
                <td>{{ post.some_datatime }}</td>
                <td>{{ post.text|safe }}</td>
                <td>
-                   {% for category in post.category.all %}
-                        <a href="{% url 'category_list' category.id %}">{{category}}</a>
-                   {% endfor %}
+                   <a href="{% url 'category_list' post.category.id %}">{{post.category}}</a>
                </td>
            </tr>
            {% endfor %}

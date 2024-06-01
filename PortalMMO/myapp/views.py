@@ -7,6 +7,7 @@ from .filters import AdvertisementFilter
 from .forms import PostForm, ResponseForm
 from .models import Advertisement, Responses, User, Category
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class ConfirmUser(UpdateView):
@@ -53,7 +54,9 @@ class PostSearch(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = AdvertisementFilter(self.request.GET, queryset)
-        return self.filterset.qs
+        if self.request.GET:
+            return self.filterset.qs
+        return Advertisement.objects.none()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,7 +64,7 @@ class PostSearch(ListView):
         return context
 
 
-class AdvertisementCreate(CreateView):
+class AdvertisementCreate(LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Advertisement
     template_name = 'flatpages/post_create.html'
@@ -78,7 +81,7 @@ class AdvertisementCreate(CreateView):
         return super().form_valid(form)
 
 
-class AdvertisementUpdate(UpdateView):
+class AdvertisementUpdate(LoginRequiredMixin, UpdateView):
     model = Advertisement
     form_class = PostForm
     template_name = 'flatpages/post_create.html'
@@ -93,12 +96,12 @@ class AdvertisementUpdate(UpdateView):
         return context
 
 
-class AdvertisementDelete(DeleteView):
+class AdvertisementDelete(LoginRequiredMixin, DeleteView):
     model = Advertisement
     template_name = 'flatpages/post_delete.html'
     success_url = reverse_lazy('advert_list')
 
-class ResponsesCreate(CreateView):
+class ResponsesCreate(LoginRequiredMixin, CreateView):
     form_class = ResponseForm
     model = Responses
     template_name = 'flatpages/response_create.html'
@@ -122,7 +125,7 @@ def delete_response(request, responses_id):
     return redirect(reverse('advert_list'))
 
 
-class CategoryListView(AdvertisementList):
+class CategoryListView(LoginRequiredMixin, AdvertisementList):
     model = Advertisement
     template_name = 'flatpages/category_list.html'
     context_object_name = 'category_news_list'
