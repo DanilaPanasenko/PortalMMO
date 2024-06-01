@@ -9,8 +9,11 @@ Advertisement
 <h1>Объявления</h1>
 <h3>{{ time_now|date:'d M Y' }}</h3>
 <h3>Всего {{ advertisement|length }} объявлений</h3>
+{% if is_not_subscribers %}
+    <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a> </p>
+{% endif %}
 <hr>
-   {% if advertisement %}
+   {% if category_news_list %}
        <table>
            <tr>
                <td>Заголовок</td>
@@ -20,12 +23,13 @@ Advertisement
            </tr>
 
 
-           {% for post in advertisement %}
+           {% for post in category_news_list %}
            <tr>
                <td>
                    <a href="{% url 'detail' post.id %}">{{post.headline}}</a>
                </td>
-               <td>{{ post.some_datatime }}</td>
+<!--               <td>{{ post.headline }}</td>-->
+               <td>{{ post.some_datatime|date:'d M Y' }}</td>
                <td>{{ post.text|safe }}</td>
                <td>
                    {% for category in post.category.all %}

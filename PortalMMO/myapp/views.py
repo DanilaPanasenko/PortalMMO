@@ -1,9 +1,11 @@
 from datetime import datetime
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import AdvertisementFilter
 from .forms import PostForm, ResponseForm
-from .models import Advertisement, Responses, User
+from .models import Advertisement, Responses, User, Category
 from django.urls import reverse_lazy, reverse
 
 
@@ -118,3 +120,30 @@ def delete_response(request, responses_id):
     response = get_object_or_404(Responses, pk=responses_id)
     response.delete()
     return redirect(reverse('advert_list'))
+
+
+class CategoryListView(AdvertisementList):
+    model = Advertisement
+    template_name = 'flatpages/category_list.html'
+    context_object_name = 'category_news_list'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Advertisement.objects.filter(category=self.category).order_by('-some_datatime')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscribers'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
+
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+
+    message = 'Вы успешно подписались на рассылку новостей категории'
+    return render(request, 'flatpages/subscribe.html', {'category': category, 'message': message})
