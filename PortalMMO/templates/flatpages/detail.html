@@ -10,5 +10,9 @@ Detail
 <hr>
 <body>{{ detail.text|safe  }}</body>
 <hr>
+<a href="{% url 'update' detail.id %}">Изменить</a>
+<hr>
+<a href="{% url 'delete' detail.id %}">Удалить</a>
+<hr>
 <a href="{% url 'response_create' detail.id %}">Оставить отзыв</a>
 {% endblock content %}

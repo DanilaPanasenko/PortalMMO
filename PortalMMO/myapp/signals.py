@@ -65,35 +65,41 @@ def about_notify_accept_responses(sender, instance, **kwargs):
     if instance.status:
         send_accept_responses(user, post)
 
-def send_notifications(preview, pk, headline, subscribers):
-    html_content = render_to_string(
-        'post_created_email.html',
-        {
-            'text': preview,
-            'link': f'{settings.SITE_URL}/detail/{pk}'
-        }
-    )
+def send_notifications(preview, pk, headline, subscribers_list, author):
+    for s in subscribers_list:
+        sub_name = s.username
+        if sub_name != author.username:
+            sub_email = [s.email]
+            html_content = render_to_string(
+                'post_created_email.html',
+                {
+                    'headline': headline,
+                    'text': preview,
+                    'link': f'{settings.SITE_URL}/detail/{pk}',
+                    'sub_name': sub_name
 
-    msg = EmailMultiAlternatives(
-        subject=headline,
-        body='',
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=subscribers,
-    )
+                }
+            )
 
-    msg.attach_alternative(html_content, 'text/html')
-    msg.send()
+            msg = EmailMultiAlternatives(
+                subject='Новое объявление!',
+                body='',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=sub_email,
+            )
+            msg.attach_alternative(html_content, 'text/html')
+            msg.send()
 
 
-@receiver(m2m_changed, sender=Advertisement)
+@receiver(post_save, sender=Advertisement)
 def notify_about_new_post(sender, instance, **kwargs):
-    if kwargs['action'] == 'post_add':
-        categories = instance.category.all()
-        subscribers_emails = []
+        categories = instance.category
+        author = instance.author
+        subscribers_list = []
 
-        for cat in categories:
-            subscribers = cat.subscribers.all()
-            subscribers_emails += [s.email for s in subscribers]
+        subscribers = categories.subscribers.all()
+        subscribers_list += [s for s in subscribers]
 
-        send_notifications(instance.preview(), instance.pk, instance.headline, subscribers_emails)
+        send_notifications(instance.preview(), instance.pk, instance.headline, subscribers_list, author)
+
 

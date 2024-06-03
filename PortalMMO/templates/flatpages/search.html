@@ -24,7 +24,9 @@ Advertisement
            </tr>
            {% for post in posts_search %}
            <tr align="left">
-               <td width="20%">{{ post.headline }}</td>
+               <td width="20%">
+                   <a href="{% url 'detail' post.id %}">{{post.headline}}</a>
+               </td>
                <td width="10%">{{ post.some_datatime|date:'d.m.Y H:i' }}</td>
                <td width="60%">{{ post.text|safe}}</td>
                <!-- <td>{{ post.rating }}</td>-->

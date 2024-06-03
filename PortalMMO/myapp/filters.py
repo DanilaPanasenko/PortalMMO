@@ -4,7 +4,7 @@ from django import forms
 
 
 class AdvertisementFilter(FilterSet):
-    author = ModelChoiceFilter(field_name='author__user', queryset=User.objects.all(), label='автор')
+    author = ModelChoiceFilter(field_name='author', queryset=User.objects.all(), label='автор')
     headline = CharFilter(field_name='headline', lookup_expr='contains', label='заголовок')
     some_datatime = DateFilter(
         field_name='some_datatime',
